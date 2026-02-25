@@ -1,16 +1,28 @@
 # 🐟 闲鱼自动回复系统
 
-
-[![GitHub](https://img.shields.io/badge/GitHub-GuDong2003%2Fxianyu--auto--reply--fix-blue?logo=github)](https://github.com/GuDong2003/xianyu-auto-reply-fix)
-[![Docker](https://img.shields.io/badge/Docker-暂不可用-blue?logo=docker)](https://github.com/zhinianboke/xianyu-auto-reply#-快速开始)
-[![Python](https://img.shields.io/badge/Python-3.11+-green?logo=python)](https://www.python.org/)
-[![License](https://img.shields.io/badge/License-仅供学习-red.svg)](#️-版权声明与使用条款)
-
 ## 原始项目
 
->https://github.com/zhinianboke-new/xianyu-auto-reply
+> https://github.com/GuDong2003/xianyu-auto-reply-fix
 
-本项目基于以上项目老马二开的版本
+本项目基于以上项目进行安全修复。
+
+## 🔒 安全修复说明
+
+**本仓库已移除原项目中的以下不安全代码：**
+
+| 风险类型 | 涉及文件 | 修复措施 |
+|---------|---------|---------|
+| **Cookie 外泄** | `XianyuAutoAsync.py` | 禁用了将 Cookie 明文发送到外部 IP `119.29.64.68:8081` 的好评接口 |
+| **数据外发** | `XianyuAutoAsync.py` | 禁用了向 `36.111.68.231:3000` 发送消息的 QQ 通知接口 |
+| **订单信息外泄** | `XianyuAutoAsync.py` | 禁用了向 `78shuk.top` 和 `116.196.116.76` 发送订单数据的亦凡 API |
+| **远程代码执行 (RCE)** | `auto_updater.py` | 禁用了从不可信 HTTP 服务器 (`116.196.116.76`) 自动下载并执行代码的更新模块 |
+| **动态代码执行** | `secure_confirm_ultra.py`<br>`secure_freeshipping_ultra.py` | 移除了多层混淆的 `exec()` 代码，替换为明文版本 |
+| **统计上报** | `usage_statistics.py` | 禁用了向作者服务器上报机器指纹的功能 |
+| **邮件内容外发** | `db_manager.py` | 禁用了向第三方服务器发送邮件内容的 API |
+| **前端外联** | `static/js/app.js`<br>`static/index.html` | 清理了硬编码的外部 IP 地址 |
+| **配置泄露** | `global_config.yml`<br>`config.py` | 清空了指向第三方服务器的 API 地址默认值 |
+
+> ⚠️ **警告**：原项目存在多处将用户敏感数据（Cookie、订单、消息）发送到不明外部服务器的代码，且包含可能导致远程代码执行的自动更新机制。**强烈建议使用本安全修复版本**。
 
 ## 📋 项目概述
 
@@ -300,8 +312,8 @@ docker run -d \
 #### 🌍 国际版（推荐海外用户）
 ```bash
 # 1. 克隆项目
-git clone https://github.com/zhinianboke/xianyu-auto-reply.git
-cd xianyu-auto-reply
+git clone https://github.com/Mr-Q526/xianyu-auto-reply-fix.git
+cd xianyu-auto-reply-fix
 
 # 2. 使用完整版配置（包含Redis缓存等增强功能）
 docker-compose up -d --build
@@ -313,8 +325,8 @@ docker-compose up -d --build
 #### 🇨🇳 中国版（推荐国内用户）
 ```bash
 # 1. 克隆项目
-git clone https://github.com/zhinianboke/xianyu-auto-reply.git
-cd xianyu-auto-reply
+git clone https://github.com/Mr-Q526/xianyu-auto-reply-fix.git
+cd xianyu-auto-reply-fix
 
 # 2. 使用中国镜像源配置（下载速度更快）
 docker-compose -f docker-compose-cn.yml up -d --build
@@ -337,8 +349,8 @@ docker-compose -f docker-compose-cn.yml up -d --build
 
 ```bash
 # 1. 克隆项目
-git clone https://github.com/zhinianboke/xianyu-auto-reply.git
-cd xianyu-auto-reply
+git clone https://github.com/Mr-Q526/xianyu-auto-reply-fix.git
+cd xianyu-auto-reply-fix
 
 # 2. 创建虚拟环境（推荐）
 python -m venv venv
@@ -923,7 +935,7 @@ docker start xianyu-auto-reply
 欢迎为项目做出贡献！您可以通过以下方式参与：
 
 ### 📝 提交问题
-- 在 [GitHub Issues](https://github.com/GuDong2003/xianyu-auto-reply-fix/issues) 中报告Bug
+- 在 [GitHub Issues](https://github.com/Mr-Q526/xianyu-auto-reply-fix/issues) 中报告Bug
 - 提出新功能建议和改进意见
 - 分享使用经验和最佳实践
 
@@ -974,8 +986,8 @@ docker-compose up -d
 
 ```bash
 # 克隆项目并从源码构建
-git clone https://github.com/zhinianboke/xianyu-auto-reply.git
-cd xianyu-auto-reply
+git clone https://github.com/Mr-Q526/xianyu-auto-reply-fix.git
+cd xianyu-auto-reply-fix
 ./docker-deploy.sh
 ```
 
@@ -1040,9 +1052,10 @@ powershell -ExecutionPolicy Bypass -File docker-deploy.bat
 
 ### 👤 原作者信息
 
-- **项目作者**：zhinianboke
-- **项目地址**：https://github.com/zhinianboke/xianyu-auto-reply
-- **联系方式**：通过GitHub Issues或项目交流群
+- **原项目作者**：zhinianboke / GuDong2003
+- **原项目地址**：https://github.com/GuDong2003/xianyu-auto-reply-fix
+- **安全修复版**：https://github.com/Mr-Q526/xianyu-auto-reply-fix
+- **联系方式**：通过GitHub Issues
 
 ### ⚠️ 免责声明
 
@@ -1055,7 +1068,7 @@ powershell -ExecutionPolicy Bypass -File docker-deploy.bat
 
 如发现本项目存在侵权内容，请通过以下方式联系：
 
-- **GitHub Issues**：https://github.com/zhinianboke/xianyu-auto-reply/issues
+- **GitHub Issues**：https://github.com/Mr-Q526/xianyu-auto-reply-fix/issues
 - **邮箱联系**：在项目交流群中获取联系方式
 
 我们将在收到通知后**立即处理**并删除相关内容。
@@ -1155,4 +1168,4 @@ python test_php_stats.py
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=zhinianboke/xianyu-auto-reply&type=Date)](https://www.star-history.com/#zhinianboke/xianyu-auto-reply&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=Mr-Q526/xianyu-auto-reply-fix&type=Date)](https://www.star-history.com/#Mr-Q526/xianyu-auto-reply-fix&Date)
