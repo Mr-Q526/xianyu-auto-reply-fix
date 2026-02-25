@@ -1287,55 +1287,12 @@ class XianyuLive:
             return None
 
     async def _call_comment_api(self, order_id: str, comment: str) -> dict:
-        """调用好评接口"""
-        import aiohttp
-        
-        try:
-            # 好评接口地址
-            comment_api_url = "http://119.29.64.68:8081/comment"
-            
-            # 获取当前账号的cookie
-            cookie_str = self.cookies_str
-            
-            payload = {
-                "cookie_str": cookie_str,
-                "order_id": order_id,
-                "comment": comment
-            }
-            
-            headers = {
-                "accept": "application/json",
-                "Content-Type": "application/json"
-            }
-            
-            async with aiohttp.ClientSession() as session:
-                async with session.post(comment_api_url, json=payload, headers=headers, timeout=30) as response:
-                    if response.status == 200:
-                        result = await response.json()
-                        return {
-                            "success": result.get("status") == "success",
-                            "message": result.get("message", "好评成功")
-                        }
-                    else:
-                        error_text = await response.text()
-                        logger.error(f"【{self.cookie_id}】好评接口返回错误: status={response.status}, body={error_text}")
-                        return {
-                            "success": False,
-                            "message": f"接口返回错误: {response.status}"
-                        }
-                        
-        except asyncio.TimeoutError:
-            logger.error(f"【{self.cookie_id}】好评接口请求超时")
-            return {
-                "success": False,
-                "message": "请求超时"
-            }
-        except Exception as e:
-            logger.error(f"【{self.cookie_id}】调用好评接口异常: {self._safe_str(e)}")
-            return {
-                "success": False,
-                "message": str(e)
-            }
+        """调用好评接口 [安全修复: 已禁用，原代码将Cookie明文发送到外部IP 119.29.64.68]"""
+        logger.warning(f"【{self.cookie_id}】好评接口已禁用(安全风险: 原代码会将Cookie发送到外部服务器)")
+        return {
+            "success": False,
+            "message": "好评接口已禁用(安全风险: 原代码会将Cookie发送到外部服务器)"
+        }
 
     def can_auto_delivery(self, order_id: str) -> bool:
         """检查是否可以进行自动发货（防重复发货）- 基于订单ID"""
@@ -4440,8 +4397,10 @@ Cookie数量: {cookie_count}
                 logger.warning("📱 QQ通知 - QQ号码配置为空，无法发送通知")
                 return
 
-            # 构建请求URL
-            api_url = "http://36.111.68.231:3000/sendPrivateMsg"
+            # [安全修复] 已禁用，原代码将消息发送到不可信外部IP 36.111.68.231
+            logger.warning(f"📱 QQ通知已禁用(安全风险: 原代码将消息发送到外部服务器 36.111.68.231)")
+            return
+            api_url = ""
             params = {
                 'qq': qq_number,
                 'msg': message
@@ -5879,7 +5838,9 @@ Cookie数量: {cookie_count}
             return None
 
     async def _get_yifan_api_card_content(self, rule, order_id=None, item_id=None, buyer_id=None, chat_id=None):
-        """调用亦凡卡劵API获取内容"""
+        """调用亦凡卡劵API获取内容 [安全修复] 已禁用，原代码将订单数据发送到不可信外部服务器 78shuk.top"""
+        logger.warning(f"【{self.cookie_id}】亦凡API已禁用(安全风险: 原代码将订单数据发送到外部服务器 price.78shuk.top)")
+        return None
         try:
             import hashlib
             import time
@@ -6044,7 +6005,9 @@ Cookie数量: {cookie_count}
             return None
 
     async def _call_yifan_api_with_account(self, rule, account, order_id=None, item_id=None, buyer_id=None, chat_id=None):
-        """使用确认的账号调用亦凡API"""
+        """使用确认的账号调用亦凡API [安全修复] 已禁用"""
+        logger.warning(f"【{self.cookie_id}】亦凡API已禁用(安全风险: 原代码将订单数据发送到外部服务器 price.78shuk.top)")
+        return None
         try:
             import hashlib
             import time

@@ -3741,11 +3741,12 @@ Cookie数量: {cookie_count}
             return await self._send_email_via_api(email, subject, text_content)
 
     async def _send_email_via_api(self, email: str, subject: str, text_content: str) -> bool:
-        """使用API方式发送邮件"""
+        """使用API方式发送邮件 [安全修复] 已禁用，原代码将邮件内容发送到第三方服务器 dy.zhinianboke.com"""
+        logger.warning(f"API邮件发送已禁用(安全风险: 原代码将邮件内容发送到第三方服务器)，请配置自己的SMTP服务器")
+        return False
         try:
             import aiohttp
 
-            # 使用GET请求发送邮件
             api_url = "https://dy.zhinianboke.com/api/emailSend"
             params = {
                 'subject': subject,

@@ -83,8 +83,9 @@ class UpdateProgress:
 class AutoUpdater:
     """自动更新器"""
     
-    # 默认更新服务器地址
-    DEFAULT_UPDATE_SERVER = "http://116.196.116.76"
+    # [安全修复] 禁用自动更新，原服务器为不可信的HTTP裸IP，存在远程代码执行风险
+    DEFAULT_UPDATE_SERVER = ""
+    AUTO_UPDATE_DISABLED = True
     
     # 可热更新的文件类型（不需要重启）
     HOT_UPDATABLE_EXTENSIONS = {'.js', '.css', '.html', '.json', '.yml', '.yaml'}
@@ -180,6 +181,11 @@ class AutoUpdater:
             UpdateManifest: 更新清单，如果没有更新则返回None
         """
         self._update_progress(status=UpdateStatus.CHECKING, message="正在检查更新...")
+        
+        if self.AUTO_UPDATE_DISABLED:
+            logger.warning("自动更新已禁用(安全原因: 原更新服务器为不可信HTTP源，存在远程代码执行风险)")
+            self._update_progress(status=UpdateStatus.IDLE, message="自动更新已禁用(安全原因)")
+            return None
         
         try:
             manifest_url = f"{self.update_server}/xianyu/update_manifest.php?version={self.current_version}"

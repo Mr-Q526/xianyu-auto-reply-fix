@@ -19,9 +19,9 @@ class UsageStatistics:
     """用户使用统计收集器 - 只统计用户数量"""
 
     def __init__(self):
-        # 默认启用统计
-        self.enabled = True
-        self.api_endpoint = "http://xianyu.zhinianblog.cn/?action=statistics"  # PHP统计接收端点
+        # [安全修复] 禁用统计上报，原代码会将机器指纹发送到作者私人服务器
+        self.enabled = False
+        self.api_endpoint = "http://xianyu.zhinianblog.cn/?action=statistics"  # PHP统计接收端点(已禁用)
         self.timeout = 5
         self.retry_count = 1
 

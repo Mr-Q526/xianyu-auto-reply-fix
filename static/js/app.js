@@ -14397,9 +14397,11 @@ async function getBenefitsInfo() {
         return remoteVersionInfo;
     }
 
-    // 从远程获取权益信息
+    // [安全修复] 已禁用远程权益检查，原代码连接不可信外部服务器
+    showToast('远程权益检查已禁用(安全原因)', 'warning');
+    return null;
     try {
-        const response = await fetch('http://116.196.116.76/version.php', {
+        const response = await fetch('', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
